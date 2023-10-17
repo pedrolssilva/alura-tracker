@@ -8,7 +8,6 @@
     </div>
     <div class="column is-three-quarter conteudo">
       <router-view></router-view>
-      <!-- Aqui vai a view correspondente -->
     </div>
   </main>
 </template>
