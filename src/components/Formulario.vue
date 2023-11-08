@@ -28,7 +28,7 @@
         </div>
       </div>
       <div class="column">
-        <TemporizadorTimer @aoTemporizadorFinalizado="finalizarTarefa" />
+        <Temporizador @aoTemporizadorFinalizado="finalizarTarefa" />
       </div>
     </div>
   </div>
@@ -36,16 +36,18 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import TemporizadorTimer from './TemporizadorTimer.vue'
+import Temporizador from './Temporizador.vue'
 import { useStore } from 'vuex'
 import { key } from '@/store'
 import { TipoNotificacao } from '@/interfaces/INotificacao'
-import { NOTIFICAR } from '@/store/tipo-mutacoes'
+import { notificacaoMixin } from '@/mixins/notificar'
+
 export default defineComponent({
   name: 'FormularioTask',
   emits: ['aoSalvarTarefa'],
+  mixins: [notificacaoMixin],
   components: {
-    TemporizadorTimer,
+    Temporizador,
   },
   data() {
     return {
@@ -54,14 +56,14 @@ export default defineComponent({
     }
   },
   methods: {
-    finalizarTarefa(tempoDecorrido: number): void {
+    finalizarTarefa(tempoDecorrido: number) {
       const projeto = this.projetos.find((p) => p.id == this.idProjeto)
       if (!projeto) {
-        this.store.commit(NOTIFICAR, {
-          titulo: 'Ops!',
-          texto: 'Selecione um projeto antes de finalizar a tarefa!',
-          tipo: TipoNotificacao.FALHA,
-        })
+        this.notificar(
+          TipoNotificacao.FALHA,
+          'Ops!',
+          'Selecione um projeto antes de finalizar a tarefa!'
+        )
         return
       }
       this.$emit('aoSalvarTarefa', {

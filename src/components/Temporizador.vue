@@ -22,7 +22,7 @@ import CronometroCounter from './CronometroCounter.vue'
 import BotaoButton from './BotaoButton.vue'
 
 export default defineComponent({
-  name: 'TemporizadorCounter',
+  name: 'Temporizador',
   emits: ['aoTemporizadorFinalizado'],
   components: {
     CronometroCounter,
