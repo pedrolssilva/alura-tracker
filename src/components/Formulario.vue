@@ -40,12 +40,11 @@ import Temporizador from './Temporizador.vue'
 import { useStore } from 'vuex'
 import { key } from '@/store'
 import { TipoNotificacao } from '@/interfaces/INotificacao'
-import { notificacaoMixin } from '@/mixins/notificar'
+import useNotificador from '@/hooks/notificador'
 
 export default defineComponent({
   name: 'FormularioTask',
   emits: ['aoSalvarTarefa'],
-  mixins: [notificacaoMixin],
   components: {
     Temporizador,
   },
@@ -76,9 +75,11 @@ export default defineComponent({
   },
   setup() {
     const store = useStore(key)
+    const { notificar } = useNotificador()
     return {
       projetos: computed(() => store.state.projetos),
       store,
+      notificar,
     }
   },
 })
