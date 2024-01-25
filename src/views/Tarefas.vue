@@ -16,6 +16,7 @@ import TarefaTask from '../components/TarefaTask.vue'
 import ITarefa from '../interfaces/ITarefa'
 import BoxItem from '../components/BoxItem.vue'
 import { ADICIONA_TAREFA } from '@/store/tipo-mutacoes'
+import { OBTER_TAREFAS } from '@/store/tipo-acoes'
 
 export default defineComponent({
   name: 'App',
@@ -36,8 +37,8 @@ export default defineComponent({
   },
   setup() {
     const store = useStore()
+    store.dispatch(OBTER_TAREFAS)
     return {
-      projetos: computed(() => store.state.projetos),
       tarefas: computed(() => store.state.tarefas),
       store,
     }
