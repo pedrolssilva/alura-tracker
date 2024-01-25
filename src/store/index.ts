@@ -15,6 +15,7 @@ import { INotificacao } from '@/interfaces/INotificacao'
 import {
   ALTERAR_PROJETO,
   CADASTRAR_PROJETO,
+  CADASTRAR_TAREFA,
   OBTER_PROJETOS,
   OBTER_TAREFAS,
   REMOVER_PROJETO,
@@ -49,10 +50,6 @@ export const store = createStore<Estado>({
     [EXCLUIR_PROJETO](state, id: string) {
       state.projetos = state.projetos.filter((proj) => proj.id != id)
     },
-    [ADICIONA_TAREFA](state, tarefa: ITarefa) {
-      tarefa.id = new Date().toISOString()
-      state.tarefas.push(tarefa)
-    },
     [NOTIFICAR](state, novaNotificacao: INotificacao) {
       novaNotificacao.id = new Date().getTime()
       state.notificacoes.push(novaNotificacao)
@@ -69,6 +66,10 @@ export const store = createStore<Estado>({
     },
     [DEFINIR_TAREFAS](state, tarefas: ITarefa[]) {
       state.tarefas = tarefas
+    },
+    [ADICIONA_TAREFA](state, tarefa: ITarefa) {
+      tarefa.id = new Date().toISOString()
+      state.tarefas.push(tarefa)
     },
   },
   actions: {
@@ -94,6 +95,11 @@ export const store = createStore<Estado>({
       http
         .get('tarefas')
         .then((resposta) => commit(DEFINIR_TAREFAS, resposta.data))
+    },
+    [CADASTRAR_TAREFA]({ commit }, tarefa: ITarefa) {
+      return http
+        .post('tarefas', tarefa)
+        .then((resposta) => commit(ADICIONA_TAREFA, resposta.data))
     },
   },
 })

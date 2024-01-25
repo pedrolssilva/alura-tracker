@@ -18,6 +18,24 @@
         "id": 1,
         "nome": "Alura Tracker 3.0"
       }
+    },
+    {
+      "duracaoEmSegundos": 5,
+      "descricao": "Refatoracao do vuex",
+      "projeto": {
+        "id": 1,
+        "nome": "Alura Tracker 3.0"
+      },
+      "id": 2
+    },
+    {
+      "duracaoEmSegundos": 2,
+      "descricao": "Estudando padroes de projeot",
+      "projeto": {
+        "nome": "ByteBank",
+        "id": 2
+      },
+      "id": 3
     }
   ]
 }
