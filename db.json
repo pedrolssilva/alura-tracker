@@ -30,7 +30,7 @@
     },
     {
       "duracaoEmSegundos": 2,
-      "descricao": "Estudando padroes de projeot",
+      "descricao": "Estudando padroes de projetos",
       "projeto": {
         "nome": "ByteBank",
         "id": 2

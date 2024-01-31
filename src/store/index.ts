@@ -5,6 +5,7 @@ import {
   ADICIONA_PROJETO,
   ADICIONA_TAREFA,
   ALTERA_PROJETO,
+  ALTERA_TAREFA,
   DEFINIR_PROJETOS,
   DEFINIR_TAREFAS,
   EXCLUIR_PROJETO,
@@ -14,6 +15,7 @@ import ITarefa from '@/interfaces/ITarefa'
 import { INotificacao } from '@/interfaces/INotificacao'
 import {
   ALTERAR_PROJETO,
+  ALTERAR_TAREFA,
   CADASTRAR_PROJETO,
   CADASTRAR_TAREFA,
   OBTER_PROJETOS,
@@ -68,8 +70,11 @@ export const store = createStore<Estado>({
       state.tarefas = tarefas
     },
     [ADICIONA_TAREFA](state, tarefa: ITarefa) {
-      tarefa.id = new Date().toISOString()
       state.tarefas.push(tarefa)
+    },
+    [ALTERA_TAREFA](state, tarefa: ITarefa) {
+      const index = state.tarefas.findIndex((tar) => tar.id === tarefa.id)
+      state.tarefas[index] = tarefa
     },
   },
   actions: {
@@ -100,6 +105,11 @@ export const store = createStore<Estado>({
       return http
         .post('tarefas', tarefa)
         .then((resposta) => commit(ADICIONA_TAREFA, resposta.data))
+    },
+    [ALTERAR_TAREFA]({ commit }, tarefa: ITarefa) {
+      return http
+        .put(`/tarefas/${tarefa.id}`, tarefa)
+        .then(() => commit(ALTERA_TAREFA, tarefa))
     },
   },
 })
