@@ -4,6 +4,19 @@
     <BoxItem v-if="listaEstaVazia">
       Você não está muito produtivo hoje :(
     </BoxItem>
+    <div class="field">
+      <p class="control has-icons-left">
+        <input
+          class="input"
+          type="text"
+          placeholder="Digite para filtrar"
+          v-model="filtro"
+        />
+        <span class="icon is-small is-left">
+          <i class="fas fa-search"></i>
+        </span>
+      </p>
+    </div>
     <TarefaTask
       v-for="tarefa in tarefas"
       :key="tarefa.id"
@@ -48,7 +61,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 import { useStore } from '@/store'
 import FormularioTask from '../components/Formulario.vue'
 import TarefaTask from '../components/TarefaTask.vue'
@@ -98,9 +111,18 @@ export default defineComponent({
     const store = useStore()
     store.dispatch(OBTER_TAREFAS)
     store.dispatch(OBTER_PROJETOS)
+
+    const filtro = ref('')
+    const tarefas = computed(() =>
+      store.state.tarefa.tarefas.filter(
+        (t) => !filtro.value || t.descricao.includes(filtro.value)
+      )
+    )
+
     return {
-      tarefas: computed(() => store.state.tarefa.tarefas),
+      tarefas,
       store,
+      filtro,
     }
   },
 })
