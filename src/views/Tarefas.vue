@@ -61,7 +61,8 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import debounce from 'lodash.debounce'
+import { computed, defineComponent, ref, watch } from 'vue'
 import { useStore } from '@/store'
 import FormularioTask from '../components/Formulario.vue'
 import TarefaTask from '../components/TarefaTask.vue'
@@ -113,14 +114,21 @@ export default defineComponent({
     store.dispatch(OBTER_PROJETOS)
 
     const filtro = ref('')
-    const tarefas = computed(() =>
-      store.state.tarefa.tarefas.filter(
-        (t) => !filtro.value || t.descricao.includes(filtro.value)
-      )
-    )
+
+    // watchEffect(() => {
+    //   store.dispatch(OBTER_TAREFAS, filtro.value)
+    // })
+
+    const search = debounce((filtro: string) => {
+      store.dispatch(OBTER_TAREFAS, filtro)
+    }, 500)
+
+    watch(filtro, (value) => {
+      search(value)
+    })
 
     return {
-      tarefas,
+      tarefas: computed(() => store.state.tarefa.tarefas),
       store,
       filtro,
     }
